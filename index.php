@@ -65,9 +65,7 @@
     <script>
       const jsH = new JsHelper;
       var numSeconds = 0,
-          mainInterval = setInterval(() => {
-            numSeconds++;
-          }, 1000);
+          mainInterval = setInterval(() => { numSeconds++; }, 1000);
       
       // VUE code
       const app = new Vue({
@@ -128,9 +126,7 @@
               });
             }
 
-            setTimeout( () => {
-              for (let numIndex = 0; numIndex < this.numbers.length; numIndex ++) this.numbers[numIndex].toShow = "*";
-            }, 2000);
+            setTimeout( () => { for (let numIndex = 0; numIndex < this.numbers.length; numIndex ++) this.numbers[numIndex].toShow = "*"; }, 2000);
           },
           init: function(num,index){
             // THE MAIN PROCESS
@@ -161,9 +157,7 @@
             this.score = 0;
             this.showedIndex = -1;
             this.isFinal = false;
-            setTimeout( () => {
-              this.create();
-            }, 500);
+            setTimeout( () => { this.create(); }, 500);
           }
         }
       });
