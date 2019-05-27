@@ -1,0 +1,180 @@
+*{
+    outline: none;
+}
+
+body{
+    font-family: 'Oswald', sans-serif;
+    background: white;
+}
+
+.number{
+    font-size: 5em;
+    display: flex;
+    justify-content: center;
+    float: left;
+    padding: 2px;
+    margin: 5px;
+    width: 10vw;
+    min-height: 10vw;
+    background-color: rgb(226, 226, 226);
+    cursor: pointer;
+    user-select: none;
+}
+
+.trNum-enter-active, .trNum-leave-active{
+    transition: all .5s linear;
+}
+
+.trNum-enter, .trNum-leave-to, .trText-enter, .trText-leave-to{
+    opacity: 0;
+}
+
+.text-container{
+    color: black;
+}
+
+#main-num-container{
+    display: block;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#main-text-container{
+    display: flex;
+    font-size: 3em;
+    justify-content: center;
+    align-content: center;
+}
+
+#records-container{
+    display: block;
+    clear: both;
+    padding-top: 5vh;
+}
+
+.title{
+    display: block;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    color: black;
+}
+
+#title-records{
+    font-size: 2em;
+}
+
+.link{
+    text-decoration: none;
+    color: blue;
+}
+
+.link:hover{
+    text-decoration: blue underline;
+}
+
+.button-container{
+    background-color: rgb(97, 97, 235);
+    font-size: 1.5em;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20vw;
+    min-height: 3vw;
+    padding: 1%;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#user-container{
+    clear: both;
+}
+
+#title-user{
+    font-size: 1.5em;
+}
+
+input{
+    -webkit-appearance: none;
+    border: none;
+    display: block;
+}
+
+input[type = "text"], input[type = "password"]{
+    font-size: 0.4em;
+    width: 18vw;
+    height: 2vw;
+    background: rgb(224, 224, 224);
+    padding: 5%;
+    transition: box-shadow .2s linear;
+    margin: 10px;
+}
+
+input[type = "text"]:focus, input[type = "password"]:focus{
+    box-shadow: inset 1px 1px 2px -0.5px gray;
+}
+
+input[type = "submit"]{
+    background-color: rgb(97, 97, 235);
+    font-size: 0.8em;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20vw;
+    height: 5vw;
+    padding: 1%;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 10px;
+    text-transform: uppercase;
+    color: white;
+    font-family: 'Oswald', sans-serif;
+}
+
+input[type = "submit"]:hover{
+    background-color: rgb(46, 46, 207);
+}
+
+.button-container:hover{
+    background-color: rgb(46, 46, 207);
+}
+
+.text-button{
+    text-decoration: none;
+    text-transform: uppercase;
+    color: white;
+}
+
+.trText-enter-active{
+    animation: main-animation-text 1.5s;
+}
+
+.trText-leave-active{
+    animation: main-animation-text 1.5s reverse;
+}
+
+.trButton-enter-active{
+    animation: main-animation-text 2s;
+}
+
+.trButton-leave-active{
+    animation: main-animation-text 2s reverse;
+}
+
+@keyframes main-animation-text{
+    0%{
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    50%{
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    100%{
+        opacity: 1;
+        transform: scale(1);
+    }
+}
