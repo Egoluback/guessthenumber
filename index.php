@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Guess numbers</title>
+    <script src="https://kit.fontawesome.com/7df1d0e2a0.js"></script>
     <script src = "scripts/js/vue.js"></script>
     <script src = "scripts/js/jshelper/jshelper.js"></script>
     <script src = "scripts/js/func.js"></script>
@@ -14,7 +15,7 @@
         <?php
           $username = $_COOKIE['username']; # getting data from cookies
             
-          if (isset($username) and $username != ''){ ?> <p class = "title" id = "title-user"><?php echo "Имя: $username."; ?></p><a href = "logout.php" class = "link">Выйти</a><?php } else { ?>
+          if (isset($username) and $username != ''){ ?> <p class = "title" id = "title-user">Профиль<i class="fas fa-user-alt"></i></p><span id = "profile-text-container"><i class="fas fa-user-circle"></i><?php echo "Имя: $username;"; ?><br /><i class="fas fa-sign-out-alt"></i><a href = "logout.php" class = "link">Выйти</a></span><?php } else { ?>
           <span id = "not-in-user-text">
             <p class = "title" id = "title-user">Вы не вошли в систему!</p>
             <a href = "login.php" class = "link">Войдите</a> или <a href = "signup.php" class = "link">зарегистрируйтесь</a>. <?php }?>
@@ -23,7 +24,7 @@
       <div id = "main-num-container">
         <div v-for = "num in numbers" class = "tr-container">
           <transition name = "trNum">
-            <div class = "number" v-show = "num.isShow == true" @click = "init(num.value,num.index)">
+            <div v-bind:id = "num.index" class = "number" v-show = "num.isShow == true" @click = "init(num.value,num.index)">
                 <div>{{ num.toShow }}</div>
             </div>
           </transition>
@@ -43,17 +44,17 @@
         </transition>
       </div>
       <div id = "options-container" class = "text-container">
-        <p id = "title-options" class = "title">настройки</p>    
+        <p id = "title-options" class = "title">настройки<i class="fas fa-cogs"></i></p>    
             <form id = "options-form">
-              <label for = "form-number-input">Число ячеек:</label><input v-model.number = "len" min = "10" max = "70" type = "number" id = "form-number-input">
+              <i class="fas fa-square-full"></i><label for = "form-number-input">Число ячеек:</label><input v-model.number = "len" step = 2 type = "number" id = "form-number-input">
             </form>
-            <div id = "form-time">Секунд прошло: {{ numSeconds }}</div>
+            <div id = "form-time"><i class="fas fa-clock"></i>Секунд прошло: {{ numSeconds }}</div>
             <div id = "error-text" v-show = "isErrorLen">
               {{ errorLenText }}
             </div>
       </div>
       <div id = "records-container" class = "text-container">
-        <p id = "title-records" class = "title">таблица рекордов</p>
+        <p id = "title-records" class = "title">таблица рекордов<i class="fas fa-running"></i></p>
         <?php
           # TABLE OF RECORDS
           require('scripts/php/config.php');
@@ -170,6 +171,7 @@
                   }
                   this.score ++;
                 } else this.numbers[this.showedIndex].toShow = "*";
+
               } else this.numbers[this.showedIndex].toShow = "*";
               this.nowNum = -1;
             } else{

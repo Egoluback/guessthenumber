@@ -207,6 +207,14 @@ input[type = "submit"]:hover{
     font-size: 1.5vw;
 }
 
+.fas{
+    margin: 0.7%;
+}
+
+#profile-text-container{
+    font-size: 1.5vw;
+}
+
 @keyframes main-animation-text{
     0%{
         opacity: 0;
