@@ -15,8 +15,10 @@
           $username = $_COOKIE['username']; # getting data from cookies
             
           if (isset($username) and $username != ''){ ?> <p class = "title" id = "title-user"><?php echo "Имя: $username."; ?></p><a href = "logout.php" class = "link">Выйти</a><?php } else { ?>
-          <p class = "title" id = "title-user">Вы не вошли в систему!</p>
-          <a href = "login.php" class = "link">Войдите</a> или <a href = "signup.php" class = "link">зарегистрируйтесь</a>. <?php }?>
+          <span id = "not-in-user-text">
+            <p class = "title" id = "title-user">Вы не вошли в систему!</p>
+            <a href = "login.php" class = "link">Войдите</a> или <a href = "signup.php" class = "link">зарегистрируйтесь</a>. <?php }?>
+          </span>
       </div>
       <div id = "main-num-container">
         <div v-for = "num in numbers" class = "tr-container">
@@ -30,15 +32,25 @@
       <div id = "after-container">
         <transition name = "trText">
           <div id = "main-text-container" class = "text-container" v-show = "isFinal">
-            <p class = "title">Вы победили!<br /> Время прохождения: {{ numSec }} секунд(ы)</p>
+            <p class = "title">Вы победили!<br /> Время прохождения: {{ numSeconds }} секунд(ы)</p>
           </div>
         </transition>
         <transition name = "trButton">
           <div v-show = "isFinal">
             <a v-bind:href = "url" class = "text-button" v-show = "isShowButt"><div class = "button-container">сохранить</div></a>
-            <a href = "#" @click = "reload()" class = "text-button"><div class = "button-container">Начать с начала</div></a>
+            <a href = "#" @click = "reload(700)" class = "text-button"><div class = "button-container">Начать с начала</div></a>
           </div>
         </transition>
+      </div>
+      <div id = "options-container" class = "text-container">
+        <p id = "title-options" class = "title">настройки</p>    
+            <form id = "options-form">
+              <label for = "form-number-input">Число ячеек:</label><input v-model.number = "len" min = "10" max = "70" type = "number" id = "form-number-input">
+            </form>
+            <div id = "form-time">Секунд прошло: {{ numSeconds }}</div>
+            <div id = "error-text" v-show = "isErrorLen">
+              {{ errorLenText }}
+            </div>
       </div>
       <div id = "records-container" class = "text-container">
         <p id = "title-records" class = "title">таблица рекордов</p>
@@ -47,7 +59,8 @@
           require('scripts/php/config.php');
           
           # sql injection from 'saves' database
-          $query = "SELECT * FROM saves ORDER BY value ASC";
+          # setting order by speed
+          $query = "SELECT * FROM saves ORDER BY speed DESC";
           $result = mysqli_query($mysqli, $query);
           mysqli_close($mysqli);
 
@@ -55,7 +68,7 @@
           echo "<ol>";
 
           while ($row = mysqli_fetch_assoc($result)){
-            echo "<li><b>Имя игрока: ".$row['username']."; Время прохождения: ".$row['value']." секунд(ы).</b></li>";
+            echo "<li><b>Коэффициент скорости: ".$row['speed']."; Имя игрока: ".$row['username']."; Время прохождения: ".$row['value']." секунд(ы); Количество ячеек: ".$row['countCells'].".</b></li>";
           }
 
           echo "</ol>";
@@ -64,37 +77,46 @@
     </div>
     <script>
       const jsH = new JsHelper;
-      var numSeconds = 0,
-          mainInterval = setInterval(() => { numSeconds++; }, 1000);
       
       // VUE code
       const app = new Vue({
         el: "#app",
         data: {
           numbers: [],
-          len: 15,
+          len: 16,
           nowNum: -1,
           score: 0,
           showedIndex: -1,
           isFinal: false,
           url: "",
           numSec: 0,
-          isShowButt: true
+          isShowButt: true,
+          isErrorLen: false,
+          errorLenText: "Только чётные числа!",
+          numSeconds: 0,
+          mainInterval: ""
         },
         watch: {
           score: function(){
-            if (this.score == Math.round(this.len / 2)){ // if user won
-              clearInterval(mainInterval); // clearing interval
-              this.numSec = numSeconds;
+            if (this.score == Math.round(this.len / 2)){ // if user has won
+              clearInterval(this.mainInterval); // clearing interval
               // creating 'url' variable for redirection
               <?php if (isset($username) and $username != ''){?> 
-                this.url = "scripts/php/add.php?value=" + numSeconds + "&username=<?php echo "$username"; ?>";
+                this.url = "scripts/php/add.php?value=" + this.numSeconds + "&username=<?php echo "$username"; ?>" + "&countCells=" + this.len;
               <?php } else{?>
                 this.url = "#";
                 this.isShowButt = false;
               <?php }?>
               this.isFinal = true;
             }
+          },
+          len: function(){
+            if ((this.len % 2) == 0){
+                this.reload(100); 
+                this.isErrorLen = false;
+            }
+            else
+                this.isErrorLen = true;
           }
         },
         created: function(){
@@ -109,12 +131,13 @@
 
             
             // filling the array with data
-            for (let i = 0; i < this.len / 2; i ++) preform.push(i);
+            for (let i = 0; i < this.len / 2; i ++) preform.push(i)
 
             // shuffling array, and concatenation
             arr1 = shuffle(preform);
             arr2 = shuffle(preform);
             arrRes = arr1.concat(arr2);
+
             
             // filling main array with correct data
             for (let i = 0; i < arrRes.length; i ++){
@@ -126,7 +149,13 @@
               });
             }
 
-            setTimeout( () => { for (let numIndex = 0; numIndex < this.numbers.length; numIndex ++) this.numbers[numIndex].toShow = "*"; }, 2000);
+            setTimeout( () => {
+              for (let numIndex = 0; numIndex < this.numbers.length; numIndex ++) this.numbers[numIndex].toShow = "*";
+            }, 2000);
+
+            this.mainInterval = setInterval(() => {
+              this.numSeconds++;
+            },1000);
           },
           init: function(num,index){
             // THE MAIN PROCESS
@@ -149,15 +178,22 @@
               this.showedIndex = index;
             }
           },
-          reload: function(){
+          reload: function(timeoutTime){
             // reloading data
+            // timeoutTime: 
+            //              700 for animation
+            //              100 for reloading by changing length
+
             this.numbers = [];
-            this.len = 15;
             this.nowNum = -1;
             this.score = 0;
             this.showedIndex = -1;
             this.isFinal = false;
-            setTimeout( () => { this.create(); }, 500);
+            this.numSeconds = 0;
+            clearInterval(this.mainInterval);
+            setTimeout( () => {
+              this.create();
+            }, timeoutTime);
           }
         }
       });

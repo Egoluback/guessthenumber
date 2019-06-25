@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1
--- Время создания: Май 27 2019 г., 09:20
+-- Время создания: Июн 25 2019 г., 09:44
 -- Версия сервера: 5.5.25
 -- Версия PHP: 5.3.13
 
@@ -30,22 +30,22 @@ CREATE TABLE IF NOT EXISTS `saves` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
   `value` int(11) NOT NULL,
+  `countCells` int(11) NOT NULL,
+  `speed` float NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 --
 -- Дамп данных таблицы `saves`
 --
 
-INSERT INTO `saves` (`id`, `username`, `value`) VALUES
-(1, 'Name', 27),
-(2, 'Tester', 31),
-(3, 'geser', 48),
-(4, 'Login', 30),
-(5, 'hello', 24),
-(6, 'name', 29),
-(7, 'name', 23);
+INSERT INTO `saves` (`id`, `username`, `value`, `countCells`, `speed`) VALUES
+(12, 'Test123', 2, 2, 1),
+(13, 'Test123', 2, 4, 2),
+(14, 'Test123', 5, 6, 1.2),
+(15, 'Test123', 2, 4, 2),
+(16, 'Test123', 3, 4, 1.33333);
 
 -- --------------------------------------------------------
 
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
 
 --
 -- Дамп данных таблицы `users`
@@ -72,7 +72,9 @@ INSERT INTO `users` (`id`, `username`, `password`) VALUES
 (9, 'Login', 'e3431a8e0adbf96fd140103dc6f63a3f8fa343ab'),
 (10, 'hello', 'e3431a8e0adbf96fd140103dc6f63a3f8fa343ab'),
 (11, 'test', 'e3431a8e0adbf96fd140103dc6f63a3f8fa343ab'),
-(12, 'name', 'e3431a8e0adbf96fd140103dc6f63a3f8fa343ab');
+(12, 'name', 'e3431a8e0adbf96fd140103dc6f63a3f8fa343ab'),
+(13, 'Some person', '4a2ee7a9c5ee818937f4827893ac3059eadc2378'),
+(14, 'Test123', 'e3431a8e0adbf96fd140103dc6f63a3f8fa343ab');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
